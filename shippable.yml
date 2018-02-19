@@ -26,18 +26,25 @@ build:
     - pushd $SHIPPABLE_REPO_DIR/$TEST_SUITES
     - $SHIPPABLE_REPO_DIR/node_modules/.bin/mocha --recursive "$SHIPPABLE_REPO_DIR/$TEST_SUITES/**/*.spec.js" -R mocha-junit-reporter --reporter-options mochaFile=$SHIPPABLE_REPO_DIR/shippable/testresults/$TEST_SUITES/testresults.xml
     - popd
+  post_ci:
+    - docker build -t ambarish2012/basic-node:master.$BUILD_NUMBER
+    - docker push ambarish2012/basic-node:master.$BUILD_NUMBER
+    - shipctl post_resource_state node_img versionName master.$BUILD_NUMBER
 
 
-# Integrations are used to connect external resources to CI
-# http://docs.shippable.com/integrations/overview/
-integrations:
+resources:
+  - name: node_img
+    type: image
+    integration: dockerhub    #replace with your Docker Hub integration name
+    pointer:
+      sourceName: "docker.io/ambarish2012/basic-node"  #replace with your image name on Docker Hub
+    seed:
+      versionName: "master.1"  #replace with your image tag on Docker Hub
 
-  # http://docs.shippable.com/ci/shippableyml/#notifications
-  notifications:
-  # turning of email for PR builds, get notified only on failure and change in status
-  # http://docs.shippable.com/integrations/notifications/email/
-    - integrationName: email
-      type: email
-      on_success: change
-      on_failure: always
-      on_pull_request: never
+jobs:
+  - name: ci-run-parallel-tests_runCI
+    type: runCI
+    OUT:
+      - node_img
+
+      
