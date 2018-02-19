@@ -45,6 +45,16 @@ resources:
       sourceName: "ambarish2012/basic-node"  #replace with your image name on Docker Hub
       versionName: "master.1"  #replace with your image tag on Docker Hub
 
+  - name: node_gitrepo
+    type: gitRepo
+    # replace github with your GitHub integration name
+    integration: github
+    pointer:
+      # replace with source code location (e.g. GitHub) where you cloned this
+      # sample project.
+      sourceName: ambarish2012/ci-run-parallel-tests
+      branch: master
+
 jobs:
   - name: ci-run-parallel-tests_runCI
     type: runCI
@@ -54,6 +64,9 @@ jobs:
   - name: runShChecker
     type: runSh
     steps:
+      - IN: node_gitrepo
       - TASK:
-        - script: ./checkrunCIstatus.sh
-        
+        - script: |
+            pushd $(shipctl get_resource_state "node_gitrepo")
+              ./checkrunCIstatus.sh
+            popd
