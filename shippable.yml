@@ -27,7 +27,7 @@ build:
     - $SHIPPABLE_REPO_DIR/node_modules/.bin/mocha --recursive "$SHIPPABLE_REPO_DIR/$TEST_SUITES/**/*.spec.js" -R mocha-junit-reporter --reporter-options mochaFile=$SHIPPABLE_REPO_DIR/shippable/testresults/$TEST_SUITES/testresults.xml
     - popd
   post_ci:
-    - docker build -t ambarish2012/basic-node:master.$BUILD_NUMBER
+    - docker build -t ambarish2012/basic-node:master.$BUILD_NUMBER .
     - docker push ambarish2012/basic-node:master.$BUILD_NUMBER
     - shipctl post_resource_state node_img versionName master.$BUILD_NUMBER
 
