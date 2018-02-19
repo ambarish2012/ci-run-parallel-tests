@@ -30,7 +30,7 @@ build:
     - docker build -t ambarish2012/basic-node:master.$BUILD_NUMBER
     - docker push ambarish2012/basic-node:master.$BUILD_NUMBER
     - shipctl post_resource_state node_img versionName master.$BUILD_NUMBER
-  
+
 
 resources:
   - name: node_img
@@ -44,4 +44,4 @@ jobs:
   - name: ci-run-parallel-tests_runCI
     type: runCI
     steps:
-      OUT: node_img
+      - OUT: node_img
