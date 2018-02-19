@@ -45,5 +45,5 @@ jobs:
   - name: ci-run-parallel-tests_runCI
     type: runCI
     steps:
-      OUT:
-        - node_img
+      OUT: node_img
+        
