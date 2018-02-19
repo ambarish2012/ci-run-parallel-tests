@@ -49,3 +49,8 @@ jobs:
     type: runCI
     steps:
       - OUT: node_img
+
+  - name: runShChecker
+    type: runSh
+    steps:
+      - script: echo "test"
