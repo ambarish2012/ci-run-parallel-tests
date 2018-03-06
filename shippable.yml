@@ -30,8 +30,7 @@ build:
     - docker build -t ambarish2012/basic-node:master.$BUILD_NUMBER .
     - docker push ambarish2012/basic-node:master.$BUILD_NUMBER
     - shipctl post_resource_state node_img versionName master.$BUILD_NUMBER
-    - 'curl -X POST -H "Authorization: apiToken 05267c17-ce42-464d-8770-cb34e05b8ee2" -H "Content-Type: application/json" -H "Accept: application/json" -d "{\"globalEnv\":{\"runId\":\"$SHIPPABLE_BUILD_ID\"}}" "https://api.shippable.com/resources/61440/triggerNewBuildRequest"'
-
+    
 integrations:
   hub:
     - integrationName: dockerhub
@@ -66,7 +65,4 @@ jobs:
     steps:
       - IN: node_gitrepo
       - TASK:
-        - script: |
-            pushd $(shipctl get_resource_state "node_gitrepo")
-              ./checkrunCIstatus.sh
-            popd
+        - script: echo "test"
